@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     containerAndroid:{
         width: 320,
-        height: 290
+        height: 300
     },
     icon: {
         width:30,
