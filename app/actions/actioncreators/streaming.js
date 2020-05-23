@@ -7,13 +7,14 @@ import DropDownHolder from "../../services/DropDownHolder";
 import * as Session from "../../util/session";
 import { bodyFormat } from "../../util/parser";
 
-export function start(reducerType) {
+export function start(reducerType, showMessage) {
     return async dispatch => {
         try {
             let { domain, access_token } = await Session.getDomainAndToken();
-            Stream.init(domain, CONST_API.STREAMING, access_token, reducerType);
-            await Stream.open(reducerType);
-            DropDownHolder.success(t("messages.streaming_enabled"));
+            await Stream.open(domain, CONST_API.STREAMING, access_token, reducerType);
+            if (showMessage) {
+                DropDownHolder.success(t("messages.streaming_enabled"));
+            }
             dispatch({ type: Streaming.STREAM_START, reducerType });
             Stream.receive(streamMessage => {
                 if (streamMessage.event === "update" && streamMessage.payload) {
@@ -57,7 +58,7 @@ export function start(reducerType) {
     };
 }
 
-export function stop(reducerType) {
+export function stop(reducerType, showMessage) {
     return async dispatch => {
         try {
             let closeCode = await Stream.close(reducerType);
@@ -65,7 +66,7 @@ export function stop(reducerType) {
                 //不明な切断
                 return;
             }
-            DropDownHolder.info(t("messages.streaming_disabled"));
+            if (showMessage) DropDownHolder.info(t("messages.streaming_disabled"));
         } catch (e) {
             DropDownHolder.error(t("messages.streaming_failed"));
             return;

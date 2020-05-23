@@ -1,10 +1,15 @@
 export default class Stream {
     static ws = {
+        main: null,
         home: null,
         local: null,
         federal: null
     };
     static init(domain, api, access_token = null, reducerType = "home") {
+        
+    }
+
+    static open(domain, api, access_token, reducerType) {
         let stream;
         switch (reducerType) {
             case "federal":
@@ -12,16 +17,16 @@ export default class Stream {
                 break;
             case "local":
                 stream = "public:local";
+                break;
             case "home":
-            default:
                 stream = "user";
+                break;
+            default:
                 break;
         }
         let url = "wss://" + domain + api.url + "?access_token=" + access_token + "&stream=" + stream;
         this.ws[reducerType] = new WebSocket(url);
-    }
-
-    static open(reducerType) {
+        this.ws['main'] = reducerType;
         return new Promise((resolve, reject) => {
             if (!this.ws[reducerType]) {
                 reject();
@@ -40,6 +45,7 @@ export default class Stream {
 
     static receive(callback, reducerType) {
         this.ws[reducerType].onmessage = event => {
+            console.log(reducerType)
             callback(JSON.parse(event.data));
         };
     }

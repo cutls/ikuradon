@@ -2,17 +2,17 @@ import React, { useState, useContext } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
-
 import { ThemeContext } from "react-native-elements";
 
 import { start, stop } from "../actions/actioncreators/streaming";
 
 export default function TimelineStreamingButton({ type }){
     const dispatch = useDispatch();
+    dispatch(start(type, false));
     const { theme } = useContext(ThemeContext);
-    const [enabled, useEnabled] = useState(false);
+    const [enabled, useEnabled] = useState(true);
     const streamSwitch = () => {
-        !enabled ? dispatch(start(type)) : dispatch(stop(type));
+        !enabled ? dispatch(start(type, true)) : dispatch(stop(type));
         useEnabled(!enabled);
     };
     return (
