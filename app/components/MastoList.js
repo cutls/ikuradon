@@ -63,7 +63,7 @@ function MastoList({ navigation, type }) {
                             }
                         }}
                     />}
-                renderItem={({ item }) => <MastoRow item={item} current={current} actions={actions} />}
+                renderItem={({ item }) => <MastoRow navigation={navigation} item={item} current={current} actions={actions} />}
                 ItemSeparatorComponent={() => <Divider />}
                 onEndReachedThreshold={1.5}
                 ListFooterComponent={() => 

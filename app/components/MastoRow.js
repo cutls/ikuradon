@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { FontAwesome } from "@expo/vector-icons";
 import { bodyFormat, dateFormat, bodySearchUrl, emojisArrayToObject } from "../util/parser";
 import CustomEmoji from "react-native-customemoji";
+import * as RouterName from "../constants/RouterName";
 
 import t from "../services/I18n";
 
@@ -18,7 +19,7 @@ import { ThemeContext } from "react-native-elements";
 import MastoRowBody from "./MastoRowBody";
 import MastoRowImage from "./MastoRowImage";
 
-const MastoRow = ({ item, current, actions }) => {
+const MastoRow = ({ navigation, item, current, actions }) => {
     // Toot data
     let { id, created_at, sensitive, spoiler_text, reblog, account, media_attachments, content, reblogged, reblogs_count, favourited, bookmarked, uri, url, favourites_count, visibility, emojis} = item;
     // current
@@ -39,6 +40,8 @@ const MastoRow = ({ item, current, actions }) => {
         ({ created_at, sensitive, reblog, account, media_attachments, content, reblogged, reblogs_count, favourited, bookmarked, uri, url, favourites_count, visibility, emojis} = reblog);
     }
     let myself = user_credentials && user_credentials.acct === account.acct;
+    let acct = account.acct;
+    let acct_id = account.id;
     return (
         <View key={id} style={[styles.container,{backgroundColor: theme.customColors.charBackground}]}>
             { reblogFlag && useMemo(() =>
@@ -57,7 +60,7 @@ const MastoRow = ({ item, current, actions }) => {
                     { useMemo(() =>
                         <View style={styles.innerPhotoContainer}>
                             <TouchableOpacity
-                                onPress={() => null}>
+                                onPress={() => navigation.navigate(RouterName.UserProf, {acct: acct, acct_id: acct_id})}>
                                 <Image
                                     source={{uri: account.avatar}}
                                     style={styles.photo}/>

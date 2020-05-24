@@ -27,7 +27,7 @@ function TimelineScreen({ route, navigation }) {
                 centerComponent={<TimelineCenterHeader fixedTitle={getFixedTitle(route.name)} onPress={navigation.openDrawer} current={current}/>}
                 rightComponent={isStream ? <TimelineStreamingButton type={type}/>: null}
             />
-            <MastoList type={type}/>
+            <MastoList navigation={navigation} type={type}/>
             <View style={styles.tootButton}>
                 <TootButton onPress={() => navigation.navigate(RouterName.Toot)}/>
             </View>

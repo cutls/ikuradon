@@ -26,6 +26,7 @@ import LoginScreen from "./app/screens/LoginScreen";
 import TimelineScreen from "./app/screens/TimelineScreen";
 import TootScreen from "./app/screens/TootScreen";
 import SearchScreen from "./app/screens/SearchScreen";
+import UserProfScreen from "./app/screens/UserProfScreen";
 import t from "./app/services/I18n";
 
 import theme from "./app/themes/default";
@@ -88,6 +89,7 @@ export default function App(props) {
                                     <Stack.Screen name={RouterName.Settings} component={SettingsScreen} options={{ title: t("settings_title")}} />
                                     <Stack.Screen name={RouterName.Toot} component={TootScreen} options={{ headerShown: false }} />
                                     <Stack.Screen name={RouterName.Search} component={SearchScreen} options={{ headerShown: false }} />
+                                    <Stack.Screen name={RouterName.UserProf} component={UserProfScreen} options={{ headerShown: false }} />
                                 </Stack.Navigator>
                             </NavigationContainer>
                         </ReduxProvider>

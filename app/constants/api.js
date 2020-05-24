@@ -170,6 +170,12 @@ export const GET_SEARCH_V2 = {
     }
 };
 
+export const GET_USER_PROF = {
+    method: "get",
+    url: "/api/v1/accounts/:param:",
+    form: {}
+};
+
 /** Streaming API とりあえずUSERのみサポート */
 export const STREAMING = {
     method: "get",

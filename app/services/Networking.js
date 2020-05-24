@@ -6,9 +6,10 @@ export default class Networking {
         return new Promise(async (resolve, reject) => {
             try {
                 let baseurl = "https://" + domain + "";
-                api.url = restParams !== null ? api.url.replace(":param:", restParams) : api.url;
+                let afterBase = api.url;
+                afterBase = restParams !== null ? afterBase.replace(":param:", restParams) : afterBase;
                 let response = await axios({
-                    url: baseurl + api.url,
+                    url: baseurl + afterBase,
                     method: api.method,
                     headers: this.createHeaders(access_token),
                     params: Object.assign(api.form, postParams)
