@@ -16,40 +16,43 @@ import * as RouterName from "../constants/RouterName";
 
 function TimelineScreen({ route, navigation }) {
     let params = null;
-    if(route.params) {
+    if (route.params) {
         params = route.params;
     }
     const type = dataSelector(route.name);
     const isBack = isBackName(route.name);
     const isStream = isStreamName(route.name);
     const current = useSelector(CurrentUserReducerSelector);
+
     useContext(ThemeContext);
     return (
         <View style={styles.container}>
             <Header
                 leftComponent={<TimelineLeftHeader isBack={isBack} goBack={navigation.goBack} openDrawer={navigation.openDrawer} />}
-                centerComponent={<TimelineCenterHeader fixedTitle={getFixedTitle(route.name)} onPress={navigation.openDrawer} current={current}/>}
-                rightComponent={isStream ? <TimelineStreamingButton type={type}/>: null}
+                centerComponent={<TimelineCenterHeader fixedTitle={getFixedTitle(route.name, params)} onPress={navigation.openDrawer} current={current} />}
+                rightComponent={isStream ? <TimelineStreamingButton type={type} /> : null}
             />
             <MastoList navigation={navigation} type={type} params={params} />
             <View style={styles.tootButton}>
-                <TootButton onPress={() => navigation.navigate(RouterName.Toot)}/>
+                <TootButton onPress={() => navigation.navigate(RouterName.Toot)} />
             </View>
         </View>
     );
 }
 
-function getFixedTitle(name){
+function getFixedTitle(name, params) {
     switch (name) {
         case RouterName.Favourites:
             return t("favourited_title");
         case RouterName.Bookmarks:
             return t("bookmarks_title");
+        case RouterName.UserTimeline:
+            return params.acct_fn;
         default:
             return "";
     }
 }
-function isStreamName(name){
+function isStreamName(name) {
     switch (name) {
         case RouterName.Timeline_Home:
         case RouterName.Timeline_Local:
@@ -60,7 +63,7 @@ function isStreamName(name){
     }
 }
 
-function isBackName(name){
+function isBackName(name) {
     switch (name) {
         case RouterName.Timeline_Home:
         case RouterName.Timeline_Local:
@@ -76,7 +79,7 @@ function isBackName(name){
     }
 }
 
-function dataSelector(name){
+function dataSelector(name) {
     switch (name) {
         case RouterName.Timeline_Home:
             return "home";

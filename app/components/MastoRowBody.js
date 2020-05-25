@@ -1,58 +1,36 @@
 import React, { useState, memo } from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { bodyFormat, bodySearchUrl, emojisArrayToObject } from "../util/parser";
-import {open as openUrl} from "../util/url";
-import Hyperlink from "react-native-hyperlink";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { emojiConvert, emojisArrayToObject } from "../util/parser";
+import { Image } from "react-native-elements";
+import { open as openUrl } from "../util/url";
+import HTMLView from 'react-native-htmlview';
 import CustomEmoji from "react-native-customemoji";
 import t from "../services/I18n";
-
-function MastoRowBody({content, style, linkStyle, sensitiveButtonColor, emojis, sensitive, spoilerText}){
-    let newContent = bodyFormat(content);
-    let existsURL = bodySearchUrl(newContent);
+function MastoRowBody({ content, style, linkStyle, sensitiveButtonColor, emojis, sensitive, spoilerText }) {
     let emojiObject = emojisArrayToObject(emojis);
+    content = emojiConvert(content, emojiObject);
     const [sensitiveDisplay, useSensitiveDisplay] = useState(false);
-    if(sensitive && spoilerText !== ""){
+    if (sensitive && spoilerText !== "") {
         return (
-            <Hyperlink linkStyle={linkStyle} onPress={url => openUrl(url)}>
+            <View>
                 <Text style={style}>{spoilerText}</Text>
-                { !sensitiveDisplay &&
-                <TouchableOpacity onPress={() => useSensitiveDisplay(true)}>
-                    <Text style={[styles.cwButton, {color: sensitiveButtonColor}]}>{t("timeline_cwtext")}</Text>
-                </TouchableOpacity>
+                {!sensitiveDisplay &&
+                    <TouchableOpacity onPress={() => useSensitiveDisplay(true)}>
+                        <Text style={[styles.cwButton, { color: sensitiveButtonColor }]}>{t("timeline_cwtext")}</Text>
+                    </TouchableOpacity>
                 }
-                { sensitiveDisplay &&
-                <CustomEmoji emojis={emojiObject}>
-                    <Text style={style}>{newContent}</Text>
-                </CustomEmoji>
+                {sensitiveDisplay &&
+                    <View emojis={emojiObject}>
+                        <HTMLView style={style} value={content} stylesheet={{ a: linkStyle }} onLinkPress={url => openUrl(url)} />
+                    </View>
                 }
-            </Hyperlink>
-        );
-    }
-    if (Object.keys(emojiObject).length > 0 && existsURL) {
-        return (
-            <Hyperlink linkStyle={linkStyle} onPress={url => openUrl(url)}>
-                <CustomEmoji emojis={emojiObject}>
-                    <Text style={style}>{newContent}</Text>
-                </CustomEmoji>
-            </Hyperlink>
-        );
-    }
-    if (Object.keys(emojiObject).length > 0) {
-        return (
-            <CustomEmoji emojis={emojiObject}>
-                <Text style={style}>{newContent}</Text>
-            </CustomEmoji>
-        );
-    }
-    if (existsURL) {
-        return (
-            <Hyperlink linkStyle={linkStyle} onPress={url => openUrl(url)}>
-                <Text style={style}>{newContent}</Text>
-            </Hyperlink>
+            </View>
         );
     }
     return (
-        <Text style={style}>{newContent}</Text>
+        <View>
+            <HTMLView style={style} value={content} stylesheet={{ a: linkStyle }} onLinkPress={url => openUrl(url)} />
+        </View>
     );
 }
 

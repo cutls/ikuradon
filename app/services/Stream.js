@@ -45,7 +45,6 @@ export default class Stream {
 
     static receive(callback, reducerType) {
         this.ws[reducerType].onmessage = event => {
-            console.log(reducerType)
             callback(JSON.parse(event.data));
         };
     }

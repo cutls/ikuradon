@@ -11,6 +11,8 @@ import NavigationService from "../services/NavigationService";
 import * as RouterName from "../constants/RouterName";
 import { open as openImageViewerAction, close as closeImageViewerAction } from "../actions/actioncreators/imageviewer";
 import MastoRow from "../components/MastoRow";
+import HTMLView from 'react-native-htmlview';
+import { open as openUrl } from "../util/url";
 
 export default function UserProf({ acct, current }) {
     const { theme } = useContext(ThemeContext);
@@ -41,7 +43,8 @@ export default function UserProf({ acct, current }) {
         closeImageViewerAction: () => { dispatch(closeImageViewerAction()) },
     };
     for (var i in pinned) {
-        pinnedUI.push(<MastoRow item={pinned[i]} current={current} actions={actions} />);
+        let index = 'pinned' + i
+        pinnedUI.push(<MastoRow item={pinned[i]} current={current} actions={actions} key={index} />);
     }
     return (
         <ScrollView style={styles.container}>
@@ -54,10 +57,10 @@ export default function UserProf({ acct, current }) {
                 </CustomEmoji>
             </ImageBackground>
             <CustomEmoji emojis={emojiObject} style={{ padding: 10 }}>
-                <Text>{bodyFormat(data.note)}</Text>
+                <HTMLView value={data.note} onLinkPress={url => openUrl(url)} />
             </CustomEmoji>
             <View style={styles.basic}>
-                <TouchableOpacity style={styles.basicContent} onPress={() => NavigationService.navigate({ name: RouterName.UserTimeline, params: { acct: acct } })}>
+                <TouchableOpacity style={styles.basicContent} onPress={() => NavigationService.navigate({ name: RouterName.UserTimeline, params: { acct: acct, acct_fn: data.display_name } })}>
                     <Text style={{ textAlign: 'center' }}>{t("profiles.statuses")}</Text>
                     <Text style={{ textAlign: 'center' }}>{data.statuses_count}</Text>
                 </TouchableOpacity>
