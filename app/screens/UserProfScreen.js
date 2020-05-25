@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Text, Image, StyleSheet, View } from "react-native";
+import { Text, Button, StyleSheet, View } from "react-native";
 import { Header, ThemeContext } from "react-native-elements";
 import { useSelector } from "react-redux";
 import t from "../services/I18n";
@@ -17,11 +17,8 @@ function UserProfScreen({ route, navigation }) {
     const { theme } = useContext(ThemeContext);
     return (
         <View style={styles.container}>
-            <Header
-                leftComponent={<TimelineLeftHeader isBack={true} goBack={navigation.goBack} openDrawer={navigation.openDrawer} />}
-                centerComponent={<TimelineCenterHeader fixedTitle={acct} onPress={navigation.openDrawer} current={current}/>}
-            />
-            <UserProf acct={acct_id} />
+            <Button onPress={()=> navigation.goBack()} color="#7a7a7a" title="back" />
+            <UserProf acct={acct_id} current={current} />
         </View>
     );
 }

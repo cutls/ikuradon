@@ -155,5 +155,11 @@ export default {
         mentioned: " mentioned you.",
         boosted: " boosted you.",
         favourited: " favourited you."
+    },
+
+    //Profile
+    profiles: {
+        pinned_toots: "Pinned toots",
+        show_all_toots: "Show all toots"
     }
 };

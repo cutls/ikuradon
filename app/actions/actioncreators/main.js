@@ -15,7 +15,8 @@ const reducerTypeArray = {
     federal: CONST_API.GET_TIMELINES_FEDERAL,
     notifications: CONST_API.GET_NOTIFICATIONS,
     favourites: CONST_API.GET_FAVOURITES,
-    bookmarks: CONST_API.GET_BOOKMARKS
+    bookmarks: CONST_API.GET_BOOKMARKS,
+    userTimeline: CONST_API.GET_USER_STATUSES
 };
 
 export function hide(id) {
@@ -35,13 +36,19 @@ export function deleting(id) {
     };
 }
 
-export function newLoadingTimeline(reducerType, since_id, clear = false, limit = 40) {
+export function newLoadingTimeline(reducerType, since_id, params, clear = false, limit = 40) {
     return async dispatch => {
         dispatch({ type: Main.REFRESHING_MASTOLIST, reducerType });
+        let param = null;
+        if(params) {
+            if(params.acct) {
+                param = params.acct;
+            }
+        }
         let data;
         try {
             let { domain, access_token } = await Session.getDomainAndToken();
-            data = await Networking.fetch(domain, reducerTypeArray[reducerType], null, { limit, since_id, max_id: null }, access_token);
+            data = await Networking.fetch(domain, reducerTypeArray[reducerType], param, { limit, since_id, max_id: null, pinned: false }, access_token);
             dispatch({ type: Main.NEW_UPDATE_MASTOLIST, data: data, reducerType, clear, streaming: false });
         } catch (e) {
             DropDownHolder.error(t("messages.network_error"),e.message);
@@ -50,13 +57,19 @@ export function newLoadingTimeline(reducerType, since_id, clear = false, limit =
     };
 }
 
-export function oldLoadingTimeline(reducerType, max_id, limit = 40) {
+export function oldLoadingTimeline(reducerType, max_id, params, limit = 40) {
     return async dispatch => {
         dispatch({ type: Main.LOADING_MASTOLIST, reducerType });
+        let param = null;
+        if(params) {
+            if(params.acct) {
+                param = params.acct;
+            }
+        }
         let data;
         try {
             let { domain, access_token } = await Session.getDomainAndToken();
-            data = await Networking.fetch(domain, reducerTypeArray[reducerType], null, { limit, since_id: null, max_id }, access_token);
+            data = await Networking.fetch(domain, reducerTypeArray[reducerType], param, { limit, since_id: null, max_id, pinned: false  }, access_token);
             dispatch({ type: Main.OLD_UPDATE_MASTOLIST, data: data, reducerType });
         } catch (e) {
             DropDownHolder.error(t("messages.network_error"),e.message);

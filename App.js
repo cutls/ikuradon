@@ -90,6 +90,7 @@ export default function App(props) {
                                     <Stack.Screen name={RouterName.Toot} component={TootScreen} options={{ headerShown: false }} />
                                     <Stack.Screen name={RouterName.Search} component={SearchScreen} options={{ headerShown: false }} />
                                     <Stack.Screen name={RouterName.UserProf} component={UserProfScreen} options={{ headerShown: false }} />
+                                    <Stack.Screen name={RouterName.UserTimeline} component={TimelineScreen} options={{ headerShown: false }} />
                                 </Stack.Navigator>
                             </NavigationContainer>
                         </ReduxProvider>

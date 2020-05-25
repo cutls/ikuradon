@@ -154,5 +154,15 @@ export default {
         mentioned: " があなたに返信しました",
         boosted: " がブーストしました",
         favourited: " がお気に入りに登録しました"
+    },
+
+    //プロフィール
+    profiles: {
+        pinned_toots: "ピン留めされたトゥートのみを表示します。",
+        show_all_toots: "全てのトゥートを見る",
+        statuses: "投稿",
+        following: "フォロー",
+        followers: "フォロワー"
     }
+    
 };

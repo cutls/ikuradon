@@ -8,11 +8,12 @@ export default class Networking {
                 let baseurl = "https://" + domain + "";
                 let afterBase = api.url;
                 afterBase = restParams !== null ? afterBase.replace(":param:", restParams) : afterBase;
+                let form = api.form;
                 let response = await axios({
                     url: baseurl + afterBase,
                     method: api.method,
                     headers: this.createHeaders(access_token),
-                    params: Object.assign(api.form, postParams)
+                    params: Object.assign(form, postParams)
                 });
                 resolve(response.data);
             } catch (e) {

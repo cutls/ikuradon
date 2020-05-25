@@ -59,6 +59,15 @@ const initialState = {
         newArrival: 0,
         lastUpdate: 0
     },
+    userTimeline: {
+        data: [],
+        refreshing: false,
+        loading: false,
+        minId: null,
+        maxId: null,
+        newArrival: 0,
+        lastUpdate: 0
+    }
 };
 
 export default function Main(state = initialState, action = {}) {

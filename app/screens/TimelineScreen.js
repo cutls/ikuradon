@@ -15,6 +15,10 @@ const CurrentUserReducerSelector = state => state.currentUserReducer;
 import * as RouterName from "../constants/RouterName";
 
 function TimelineScreen({ route, navigation }) {
+    let params = null;
+    if(route.params) {
+        params = route.params;
+    }
     const type = dataSelector(route.name);
     const isBack = isBackName(route.name);
     const isStream = isStreamName(route.name);
@@ -27,7 +31,7 @@ function TimelineScreen({ route, navigation }) {
                 centerComponent={<TimelineCenterHeader fixedTitle={getFixedTitle(route.name)} onPress={navigation.openDrawer} current={current}/>}
                 rightComponent={isStream ? <TimelineStreamingButton type={type}/>: null}
             />
-            <MastoList navigation={navigation} type={type}/>
+            <MastoList navigation={navigation} type={type} params={params} />
             <View style={styles.tootButton}>
                 <TootButton onPress={() => navigation.navigate(RouterName.Toot)}/>
             </View>
@@ -65,6 +69,7 @@ function isBackName(name){
             return false;
         case RouterName.Favourites:
         case RouterName.Bookmarks:
+        case RouterName.UserTimeline:
             return true;
         default:
             return true;
@@ -85,6 +90,8 @@ function dataSelector(name){
             return "favourites";
         case RouterName.Bookmarks:
             return "bookmarks";
+        case RouterName.UserTimeline:
+            return "userTimeline";
         default:
             return "home";
     }

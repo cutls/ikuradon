@@ -20,7 +20,7 @@ const reducerSelector = state => ({
 
 const REFRESH_TIME = 300;
 
-function MastoList({ navigation, type }) {
+function MastoList({ navigation, type, params }) {
     const dispatch = useDispatch();
     const [init, setInit] = useState(false);
     const { current, main, streaming, imageviewer } = useSelector(reducerSelector);
@@ -28,7 +28,7 @@ function MastoList({ navigation, type }) {
     const streamingType = streaming[type];
     if (!init && listdata && listdata.data instanceof Array && listdata.data.length < 1) {
         setInit(true);
-        dispatch(newLoadingTimeline(type, listdata.maxId, true));
+        dispatch(newLoadingTimeline(type, listdata.maxId, params, true));
     }
     const actions = {
         ReplyAction: (id, tootid, user, acct, image, body) => NavigationService.navigate({ name: RouterName.Toot, params: { id, tootid, user, acct, image, body }}),
@@ -57,9 +57,9 @@ function MastoList({ navigation, type }) {
                             }
                             const time = Math.floor(new Date().getTime() / 1000);
                             if(time - listdata.lastUpdate >= REFRESH_TIME){
-                                dispatch(newLoadingTimeline(type, listdata.maxId, true));
+                                dispatch(newLoadingTimeline(type, listdata.maxId, params, true));
                             }else{
-                                dispatch(newLoadingTimeline(type, listdata.maxId));
+                                dispatch(newLoadingTimeline(type, listdata.maxId, params));
                             }
                         }}
                     />}
@@ -74,7 +74,7 @@ function MastoList({ navigation, type }) {
                 }
                 onEndReached={() => {
                     if(init && listdata && listdata.data instanceof Array && listdata.data.length >= 10 && !listdata.loading){
-                        dispatch(oldLoadingTimeline(type, listdata.minId));
+                        dispatch(oldLoadingTimeline(type, listdata.minId, params));
                     }
                 }}
             />

@@ -17,5 +17,6 @@ export const Timeline_Setting = "Timeline_Setting";
 export const Search = "Search";
 export const Favourites = "Favourites";
 export const Bookmarks = "Bookmarks";
+export const UserTimeline = "UserTimeline";
 export const Settings = "Settings";
 export const UserProf = "UserProf";

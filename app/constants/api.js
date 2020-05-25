@@ -176,6 +176,17 @@ export const GET_USER_PROF = {
     form: {}
 };
 
+export const GET_USER_STATUSES = {
+    method: "get",
+    url: "/api/v1/accounts/:param:/statuses",
+    form: {
+        limit: "40", //optional
+        since_id: null, //new timeline
+        max_id: null, //old timeline
+        pinned: false
+    }
+}
+
 /** Streaming API とりあえずUSERのみサポート */
 export const STREAMING = {
     method: "get",
