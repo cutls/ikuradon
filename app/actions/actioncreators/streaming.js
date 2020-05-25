@@ -58,7 +58,7 @@ export function start(reducerType, showMessage) {
     };
 }
 
-export function stop(reducerType, showMessage) {
+export function stop(reducerType, showMessage, temp) {
     return async dispatch => {
         try {
             let closeCode = await Stream.close(reducerType);
@@ -71,6 +71,8 @@ export function stop(reducerType, showMessage) {
             DropDownHolder.error(t("messages.streaming_failed"));
             return;
         }
-        dispatch({ type: Streaming.STREAM_STOP, reducerType });
+        if(!temp) {
+            dispatch({ type: Streaming.STREAM_STOP, reducerType });
+        }
     };
 }
